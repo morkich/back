@@ -4,9 +4,17 @@ const handleError = (response, error) => {
     response.status(500).json(error);
 };
 
+const getSelectedFieldsByRequest = (request) => {
+    return request.query.fields
+        ? request.query.fields.replaceAll(",", " ")
+        : "";
+};
+
 const getCategories = (request, response) => {
+    const selectedFields = getSelectedFieldsByRequest(request);
     Category.find()
         .sort({ title: 1 })
+        .select(selectedFields)
         .then((categories) => {
             response.status(200).json(categories);
         })
@@ -14,7 +22,9 @@ const getCategories = (request, response) => {
 };
 
 const getCategory = (request, response) => {
+    const selectedFields = getSelectedFieldsByRequest(request);
     Category.findById(request.params.id)
+        .select(selectedFields)
         .then((category) => {
             response.status(200).json(category);
         })
