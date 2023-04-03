@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const categoryRoutes = require("./routes/category-routes");
+const authRoutes = require("./routes/auth-routes");
+const roleRoutes = require("./routes/role-routes");
 
 const PORT = 3000;
 const databaseName = "m_kitchen";
@@ -10,6 +12,8 @@ const URL = `mongodb://${host}/${databaseName}`;
 const app = express();
 app.use(express.json());
 app.use(categoryRoutes);
+app.use(authRoutes);
+app.use(roleRoutes);
 
 mongoose
     .connect(URL)

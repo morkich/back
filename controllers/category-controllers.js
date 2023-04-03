@@ -10,25 +10,28 @@ const getSelectedFieldsByRequest = (request) => {
         : "";
 };
 
-const getCategories = (request, response) => {
-    const selectedFields = getSelectedFieldsByRequest(request);
-    Category.find()
-        .sort({ title: 1 })
-        .select(selectedFields)
-        .then((categories) => {
-            response.status(200).json(categories);
-        })
-        .catch((error) => handleError(response, error));
+const getCategories = async (request, response) => {
+    try {
+        const selectedFields = getSelectedFieldsByRequest(request);
+        const categories = await Category.find()
+            .sort({ title: 1 })
+            .select(selectedFields);
+        return response.status(200).json(categories);
+    } catch (error) {
+        handleError(response, error);
+    }
 };
 
-const getCategory = (request, response) => {
+const getCategory = async (request, response) => {
     const selectedFields = getSelectedFieldsByRequest(request);
-    Category.findById(request.params.id)
-        .select(selectedFields)
-        .then((category) => {
-            response.status(200).json(category);
-        })
-        .catch((error) => handleError(response, error));
+    try {
+        const category = await Category.findById(request.params.id).select(
+            selectedFields
+        );
+        response.status(200).json(category);
+    } catch (error) {
+        handleError(response, error);
+    }
 };
 
 const deleteCategory = (request, response) => {
