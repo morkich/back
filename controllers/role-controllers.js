@@ -5,12 +5,13 @@ const handleError = (response, error) => {
 };
 
 const insertRole = (request, response) => {
-    const role = new Role(request.body);
-    role.save()
-        .then((result) => {
-            response.status(201).json(result);
-        })
-        .catch((error) => handleError(response, error));
+    try {
+        const role = new Role(request.body);
+        role.save();
+        return response.status(200).json({ message: "Роль создана!" });
+    } catch (error) {
+        handleError(response, error);
+    }
 };
 
 module.exports = {

@@ -18,9 +18,7 @@ const registration = async (request, response) => {
         const { username, password } = request.body;
         const candidate = await User.findOne({ username });
         if (candidate) {
-            return response
-                .status(400)
-                .json({ message: "такой пользователь уже есть" });
+            return response.status(400).json({ message: "такой пользователь уже есть" });
         }
         const salt = bcrypt.genSaltSync(7);
         const hashPassword = bcrypt.hashSync(password, salt);
@@ -31,35 +29,38 @@ const registration = async (request, response) => {
             roles: [userRole.value],
         });
         user.save();
-        return response
-            .status(200)
-            .json({ message: "Пользователь зарегистрирован!" });
+        return response.status(200).json({ message: "Пользователь зарегистрирован!" });
     } catch (error) {
         handleError(response, error);
     }
 };
 
 const login = async (request, response) => {
+    console.log(request.body);
     try {
         const { username, password } = request.body;
         const user = await User.findOne({ username });
         if (!user) {
-            return response
-                .status(400)
-                .json({ message: "Такого пользователя не существует!" });
+            return response.status(400).json({ message: "Такого пользователя не существует!" });
         }
         const validPassword = bcrypt.compareSync(password, user.password);
         if (!validPassword) {
-            return response
-                .status(400)
-                .json({ message: "Введен неверный пароль!" });
+            return response.status(400).json({ message: "Введен неверный пароль!" });
         }
         const token = generateAccessToken(user._id, user.roles);
-        return response.status(200).json({ token });
+        return response.status(200).json({ token, user });
     } catch (error) {
         handleError(response, error);
     }
 };
+
+// const isAuth = (request, response) => {
+//     const token = request.headers.authorization.split(" ")[1];
+//     if (!token) {
+//         return response.status(403).json({ message: "Пользователь не авторизован!" });
+//     }
+//     const decodedData = jwt.verify(token, secret);
+// };
 
 const generateAccessToken = (id, role) => {
     const payload = {
@@ -72,4 +73,5 @@ const generateAccessToken = (id, role) => {
 module.exports = {
     login,
     registration,
+    // isAuth,
 };
