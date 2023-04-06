@@ -36,7 +36,6 @@ const registration = async (request, response) => {
 };
 
 const login = async (request, response) => {
-    console.log(request.body);
     try {
         const { username, password } = request.body;
         const user = await User.findOne({ username });
@@ -54,13 +53,18 @@ const login = async (request, response) => {
     }
 };
 
-// const isAuth = (request, response) => {
-//     const token = request.headers.authorization.split(" ")[1];
-//     if (!token) {
-//         return response.status(403).json({ message: "Пользователь не авторизован!" });
-//     }
-//     const decodedData = jwt.verify(token, secret);
-// };
+const authUser = async (request, response) => {
+    const token = request.body.token;
+    if (!token) {
+        return response.status(403).json({ message: "Пользователь не авторизован!" });
+    }
+    const decodedData = jwt.verify(token, secret);
+    const user = await User.findById(decodedData.id);
+    if (!user) {
+        return response.status(403).json({ message: "Произошло что-то странное!" });
+    }
+    return response.status(200).json({ token, user });
+};
 
 const generateAccessToken = (id, role) => {
     const payload = {
@@ -73,5 +77,5 @@ const generateAccessToken = (id, role) => {
 module.exports = {
     login,
     registration,
-    // isAuth,
+    authUser,
 };
