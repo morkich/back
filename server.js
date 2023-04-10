@@ -3,6 +3,10 @@ const mongoose = require("mongoose");
 const categoryRoutes = require("./routes/category-routes");
 const authRoutes = require("./routes/auth-routes");
 const roleRoutes = require("./routes/role-routes");
+const recipeRoutes = require("./routes/recipe-routes");
+const userRoutes = require("./routes/user-routes");
+const toolRoutes = require("./routes/tool-routes");
+const ingredientRoutes = require("./routes/ingredient-routes");
 
 const PORT = 3000;
 const databaseName = "m_kitchen";
@@ -22,6 +26,10 @@ app.use(express.json());
 app.use(categoryRoutes);
 app.use(authRoutes);
 app.use(roleRoutes);
+app.use(recipeRoutes);
+app.use(userRoutes);
+app.use(toolRoutes);
+app.use(ingredientRoutes);
 
 mongoose
     .connect(URL)
