@@ -10,8 +10,20 @@ const getSelectedFieldsByRequest = (request) => {
 
 const getCategories = async (request, response) => {
     try {
-        const selectedFields = getSelectedFieldsByRequest(request);
-        const categories = await Category.find().sort({ title: 1 }).select(selectedFields);
+        let categories = [];
+        switch (true) {
+            case request.query.ids:
+                const categoriesIds = request.query.ids.split(",");
+                categories = await Category.find({ _id: { $in: categoriesIds } });
+                break;
+            case request.query.fields:
+                const selectedFields = getSelectedFieldsByRequest(request);
+                categories = await Category.find().sort({ title: 1 }).select(selectedFields);
+                break;
+            default:
+                categories = await Category.find().sort({ title: 1 });
+                break;
+        }
         return response.status(200).json(categories);
     } catch (error) {
         handleError(response, error);

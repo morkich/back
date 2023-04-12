@@ -7,11 +7,14 @@ const handleError = (response, error) => {
 const getIngredients = async (request, response) => {
     try {
         let ingredients = [];
-        if (request.query.ids) {
-            const ingredientsIds = request.query.ids.split(",");
-            ingredients = await Ingredient.find({ _id: { $in: ingredientsIds } });
-        } else {
-            ingredients = await Ingredient.find();
+        switch (true) {
+            case request.query.ids:
+                const ingredientsIds = request.query.ids.split(",");
+                ingredients = await Ingredient.find({ _id: { $in: ingredientsIds } });
+                break;
+            default:
+                ingredients = await Ingredient.find();
+                break;
         }
         response.status(200).json(ingredients);
     } catch (error) {
