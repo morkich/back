@@ -23,7 +23,17 @@ const insertRecipe = (request, response) => {
     }
 };
 
+const addView = async (request, response) => {
+    try {
+        const recipe = await Recipe.findByIdAndUpdate(request.params.id, { $inc: { views: 1 } }, { new: true });
+        response.status(200).json(recipe);
+    } catch (error) {
+        handleError(response, error);
+    }
+};
+
 module.exports = {
     getRecipe,
     insertRecipe,
+    addView,
 };
