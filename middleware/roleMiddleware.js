@@ -7,11 +7,10 @@ module.exports = (roles) => (request, response, next) => {
     }
 
     try {
-        const token = request.headers.authorization.split(" ")[1];
+        const token = request.body.token;
+
         if (!token) {
-            response
-                .status(403)
-                .json({ message: "Пользователь не авторизован!" });
+            response.status(403).json({ message: "Пользователь не авторизован!" });
         }
         const userData = jwt.verify(token, secret);
         let hasRole = false;
@@ -26,8 +25,6 @@ module.exports = (roles) => (request, response, next) => {
         }
         next();
     } catch (error) {
-        return response
-            .status(403)
-            .json({ message: `Пользователь не авторизован! ${error}` });
+        return response.status(403).json({ message: `Пользователь не авторизован! ${error}` });
     }
 };

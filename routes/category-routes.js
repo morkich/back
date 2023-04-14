@@ -1,5 +1,4 @@
 const express = require("express");
-const authMiddleware = require("../middleware/authMiddleware");
 const roleMiddleware = require("../middleware/roleMiddleware");
 
 const { getCategories, getCategory, deleteCategory, insertCategory, updateCategory } = require("../controllers/category-controllers");
