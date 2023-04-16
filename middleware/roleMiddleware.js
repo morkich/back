@@ -7,8 +7,7 @@ module.exports = (roles) => (request, response, next) => {
     }
 
     try {
-        const token = request.body.token;
-
+        const token = request.headers.authorization.split(" ")[1];
         if (!token) {
             response.status(403).json({ message: "Пользователь не авторизован!" });
         }

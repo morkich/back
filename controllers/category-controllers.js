@@ -12,11 +12,11 @@ const getCategories = async (request, response) => {
     try {
         let categories = [];
         switch (true) {
-            case request.query.ids:
+            case !!request.query.ids:
                 const categoriesIds = request.query.ids.split(",");
                 categories = await Category.find({ _id: { $in: categoriesIds } });
                 break;
-            case request.query.fields:
+            case !!request.query.fields:
                 const selectedFields = getSelectedFieldsByRequest(request);
                 categories = await Category.find().sort({ title: 1 }).select(selectedFields);
                 break;

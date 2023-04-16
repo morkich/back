@@ -14,12 +14,16 @@ const recipeSchema = new Schema({
         {
             stepImage: String,
             stepText: String,
-            ingredients: [{ type: Schema.Types.ObjectId, ref: "Ingredient" }],
-            tools: [{ type: Schema.Types.ObjectId, ref: "Tool" }],
+            stepIngredients: [
+                {
+                    ingredientId: { type: Schema.Types.ObjectId, ref: "Ingredient" },
+                    mass: Number,
+                },
+            ],
+            stepTools: [{ type: Schema.Types.ObjectId, ref: "Tool" }],
+            stepCookingTime: Number,
         },
     ],
-    cookingTime: Number,
-    kkal: Number,
     author: { type: Schema.Types.ObjectId, ref: "User" },
     categories: [{ type: Schema.Types.ObjectId, ref: "Category" }],
     likes: {

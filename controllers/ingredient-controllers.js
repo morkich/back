@@ -8,7 +8,7 @@ const getIngredients = async (request, response) => {
     try {
         let ingredients = [];
         switch (true) {
-            case request.query.ids:
+            case !!request.query.ids:
                 const ingredientsIds = request.query.ids.split(",");
                 ingredients = await Ingredient.find({ _id: { $in: ingredientsIds } });
                 break;
