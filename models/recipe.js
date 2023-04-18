@@ -10,6 +10,10 @@ const recipeSchema = new Schema({
     image: String,
     beforeText: String,
     afterText: String,
+    portionsCount: {
+        type: Number,
+        default: 4,
+    },
     steps: [
         {
             stepImage: String,
