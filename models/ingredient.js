@@ -11,7 +11,6 @@ const ingredientSchema = new Schema({
         require: true,
         unique: true,
     },
-    // category: [{ type: String, ref: "Category" }],
     unit: String,
     kcal: Number,
     fats: Number,
