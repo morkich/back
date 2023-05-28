@@ -55,6 +55,7 @@ const login = async (request, response) => {
 
 const authUser = async (request, response) => {
     const token = request.body.token;
+
     if (!token) {
         return response.status(403).json({ message: "Пользователь не авторизован!" });
     }
